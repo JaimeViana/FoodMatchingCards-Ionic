@@ -1,0 +1,7 @@
+{
+  "name": "foodMatching",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
