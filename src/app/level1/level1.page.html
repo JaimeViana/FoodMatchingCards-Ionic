@@ -12,14 +12,19 @@
   <!-- Actual cards display -->
   <ion-row align-items-center text-center size="8">
     <ion-col align-self-center size="3" *ngFor="let c of cardsArray; let i = index">
+      <!-- show card background -->
       <img src="../../assets/img/cards/background.png"
-        *ngIf="c.pos !=selectCard1pos && c.pos != selectCard2pos && c.val > -1" (click)="selectCard(c.pos, c.val)">
-      <img [src]="imageDir + images[c.val] + '.jpg'" *ngIf="c.pos == selectCard1pos && c.val > -1"
-        (click)="selectCard(c.pos, c.val)">
+        *ngIf="c.pos !=selectCard1pos && c.pos != selectCard2pos && c.val > -1" (click)="selectCard(c.pos, c.val, i)">
+      <!-- show card 1 selected -->
+      <img [src]="imageDir + images[c.val] + '.jpg'" *ngIf="c.pos == selectCard1pos && c.val > -1">
+      <!-- show card 2 selected -->
+      <img [src]="imageDir + images[c.val] + '.jpg'" *ngIf="c.pos == selectCard2pos && c.val > -1">
+      <!-- show hidden card -->
+      <img *ngIf="c.val == -1" style="visibility: hidden;">
     </ion-col>
   </ion-row>
   <div align="center">
     <h5>{{debugText}}</h5>
-    <h5>{{imageDir}}{{images[selectCard1val]}}.jpg</h5>
+    <h5>User life: {{userLife}}</h5>
   </div>
 </ion-content>
