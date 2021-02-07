@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Level 1</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div align="center">
+    <h2>Match all cards to win!</h2>
+  </div>
+
+  <!-- Actual cards display -->
+  <ion-row align-items-center text-center size="8">
+    <ion-col align-self-center size="3" *ngFor="let c of cardsArray; let i = index">
+      <img src="../../assets/img/cards/background.png"
+        *ngIf="c.pos !=selectCard1pos && c.pos != selectCard2pos && c.val > -1" (click)="selectCard(c.pos, c.val)">
+      <img [src]="imageDir + images[c.val] + '.jpg'" *ngIf="c.pos == selectCard1pos && c.val > -1"
+        (click)="selectCard(c.pos, c.val)">
+    </ion-col>
+  </ion-row>
+  <div align="center">
+    <h5>{{debugText}}</h5>
+    <h5>{{imageDir}}{{images[selectCard1val]}}.jpg</h5>
+  </div>
+</ion-content>
