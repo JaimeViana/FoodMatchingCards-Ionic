@@ -7,6 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class Level1Page implements OnInit {
 
+  public gameState; // Keep track of current game state
+  public startGame; // Will set to false to display intro
+  public countDown; // Lets show 3 second countDown
+  public totalTime; // How long the player has to win
+  public countTime; // Elapsed time while game is playing
+  public shownTime; // Time shown as string format
+  public interTime; // Timer: 1 second for in game tracking
+  public interCount; // Timer: 1 second for in game counter
+
   public cardsTotal = 12; // Total cards to Match (divided by 2)
   public cardsArray = []; // Store all card pairs
   public userLife = 4;  // Total amount of tries user gets
@@ -93,11 +102,55 @@ export class Level1Page implements OnInit {
 
   // Function to restart the game
   restartGame() {
+    this.gameState = 'load';
+    this.startGame = false;
+    this.countDown = 3;
+    this.totalTime = 60;
+    this.countTime = 0;
+    this.shownTime = 0;
+    this.interCount = null;
+
     this.userLife = 4;
     this.resetSelects();
     this.populateCards();
     this.shuffle(this.cardsArray);
     this.shuffle(this.images);
+
+    setTimeout(() => {
+      this.startGame = true; // Actually start the game
+      this.gameState = 'init'; // Game has been initialized
+    }, this.countDown * 1000);
+
+    // This will subtract 1 from countdown start time
+    this.interCount = setInterval(() => {
+      if (this.countDown < 0) {
+        clearInterval(this.interCount);
+        this.interCount = null;
+      }
+      else this.countDown -= 1;
+    }, 1000);
+
+    // This timer will keep track of time once the game starts
+    setTimeout(() => {
+      this.interTime = setInterval(() => {
+        if (this.countTime >= this.totalTime) this.loseCon();
+        if (this.gameState == 'init') {
+          this.countTime += 1; // Add 1 second to counter
+          let minutes = Math.floor((this.totalTime - this.countTime) / 60);
+          let seconds = (this.totalTime - this.countTime) - minutes * 60;
+          this.shownTime = minutes.toString() + ":" + seconds.toString();
+        }
+        else {
+          clearInterval(this.interTime);
+          this.interTime = null;
+        }
+      }, 1000)
+    }, this.countDown * 1000 + 200)
+  }
+
+  // Lose condition
+  loseCon() {
+    this.gameState = 'lose';
   }
 
   // Function to reset selected cards

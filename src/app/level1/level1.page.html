@@ -9,8 +9,15 @@
     <h2>Match all cards to win!</h2>
   </div>
 
+  <!-- Show loading screen -->
+  <div align="center" *ngIf="!startGame">
+    <p>Match all the cards to win!</p>
+    <p>You have a total of <strong>{{userLife}}</strong> tries.</p>
+    <h4>Start in <span style="color: red; font-size: 24px ;">{{countDown}}</span>...</h4>
+  </div>
+
   <!-- Actual cards display -->
-  <ion-row align-items-center text-center size="8">
+  <ion-row align-items-center text-center size="8" *ngIf="startGame && gameState == 'init'">
     <ion-col align-self-center size="3" *ngFor="let c of cardsArray; let i = index">
       <!-- show card background -->
       <img src="../../assets/img/cards/background.png"
@@ -23,8 +30,17 @@
       <img *ngIf="c.val == -1" style="visibility: hidden;">
     </ion-col>
   </ion-row>
-  <div align="center">
-    <h5>{{debugText}}</h5>
-    <h5>User life: {{userLife}}</h5>
+
+  <div align="center" *ngIf="startGame && gameState == 'init'">
+    <ion-row>
+      <ion-col col-9>
+        <p>You have <span style="color: green; font-size: 24px;">{{userLife}} </span>tries ...</p>
+      </ion-col>
+      <p><span style="color: red; font-size: 24px;">{{shownTime}}</span></p>
+      <ion-col>
+
+      </ion-col>
+    </ion-row>
   </div>
+
 </ion-content>
