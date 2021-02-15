@@ -41,8 +41,8 @@ export class Level1Page implements OnInit {
     this.cardsArray = [];
     let x = 0;
     let y = 0;
-    for (let i = 0; i < this.cardsTotal; i++) {
-      //Push card to array and asign value
+    for (var i = 0; i < this.cardsTotal; i++) {
+      //Push card to array and assign value
       this.cardsArray.push({ pos: i, val: y });
       // Flip x to assign next card same value
       if (x == 0) x = 1;
@@ -71,19 +71,20 @@ export class Level1Page implements OnInit {
     // If we have both cards selected, check for match or fail
     if (actOne && this.selectCard1pos > -1 && this.selectCard2pos > -1) {
       setTimeout(() => {
-        // If the cards match, do this...
+        // if the cards match, do this...
         if (this.selectCard1val == this.selectCard2val) {
-          this.debugText = 'Cards match!';
+          this.debugText = "Cards match!";
           this.cardsArray.splice(this.selectOldPosix, 1, { pos: this.selectOldPosix, val: -1 });
           this.cardsArray.splice(i, 1, { pos: i, val: -1 });
           this.resetSelects();
+          this.winCon();
         }
-        //Otherwise, take a life and reset
+        // Otherwise, take a life and reset
         else {
-          this.debugText = 'Cards don\'t match';
-          this.userLife--;
+          this.debugText = "Cards don't match!";
+          this.userLife -= 1;
           this.resetSelects();
-          if (this.userLife <= 0) this.restartGame();
+          if (this.userLife <= 0) this.loseCon();
         }
       }, 1000);
     }
@@ -110,7 +111,7 @@ export class Level1Page implements OnInit {
     this.shownTime = 0;
     this.interCount = null;
 
-    this.userLife = 4;
+    this.userLife = 6;
     this.resetSelects();
     this.populateCards();
     this.shuffle(this.cardsArray);
@@ -146,6 +147,16 @@ export class Level1Page implements OnInit {
         }
       }, 1000)
     }, this.countDown * 1000 + 200)
+  }
+
+  // Win condition
+  winCon() {
+    var winCheck = false;
+    // If at least 1 or more cards have not been solved, then user hasn't won yet
+    for (var i = 0; i < this.cardsArray.length; i++)
+      if (this.cardsArray[i].val != -1) winCheck = true;
+    // if winCheck is false, player has won the game
+    if (winCheck == false) this.gameState = 'win';
   }
 
   // Lose condition

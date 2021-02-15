@@ -5,9 +5,6 @@
 </ion-header>
 
 <ion-content>
-  <div align="center">
-    <h2>Match all cards to win!</h2>
-  </div>
 
   <!-- Show loading screen -->
   <div align="center" *ngIf="!startGame">
@@ -17,30 +14,54 @@
   </div>
 
   <!-- Actual cards display -->
-  <ion-row align-items-center text-center size="8" *ngIf="startGame && gameState == 'init'">
-    <ion-col align-self-center size="3" *ngFor="let c of cardsArray; let i = index">
-      <!-- show card background -->
-      <img src="../../assets/img/cards/background.png"
-        *ngIf="c.pos !=selectCard1pos && c.pos != selectCard2pos && c.val > -1" (click)="selectCard(c.pos, c.val, i)">
-      <!-- show card 1 selected -->
-      <img [src]="imageDir + images[c.val] + '.jpg'" *ngIf="c.pos == selectCard1pos && c.val > -1">
-      <!-- show card 2 selected -->
-      <img [src]="imageDir + images[c.val] + '.jpg'" *ngIf="c.pos == selectCard2pos && c.val > -1">
-      <!-- show hidden card -->
-      <img *ngIf="c.val == -1" style="visibility: hidden;">
-    </ion-col>
-  </ion-row>
+  <div align="center" *ngIf="startGame && gameState == 'init'">
+    <h2>Match all cards to win!</h2>
+    <ion-row align-items-center text-center size="8">
+      <ion-col align-self-center size="3" *ngFor="let c of cardsArray; let i = index">
+        <!-- show card background -->
+        <img src="../../assets/img/cards/background.png"
+          *ngIf="c.pos !=selectCard1pos && c.pos != selectCard2pos && c.val > -1" (click)="selectCard(c.pos, c.val, i)">
+        <!-- show card 1 selected -->
+        <img [src]="imageDir + images[c.val] + '.jpg'" *ngIf="c.pos == selectCard1pos && c.val > -1">
+        <!-- show card 2 selected -->
+        <img [src]="imageDir + images[c.val] + '.jpg'" *ngIf="c.pos == selectCard2pos && c.val > -1">
+        <!-- show hidden card -->
+        <img *ngIf="c.val == -1" style="visibility: hidden;">
+      </ion-col>
+    </ion-row>
+  </div>
 
   <div align="center" *ngIf="startGame && gameState == 'init'">
     <ion-row>
       <ion-col col-9>
         <p>You have <span style="color: green; font-size: 24px;">{{userLife}} </span>tries ...</p>
       </ion-col>
-      <p><span style="color: red; font-size: 24px;">{{shownTime}}</span></p>
       <ion-col>
-
+        <p><span style="color: red; font-size: 24px;">{{shownTime}}</span></p>
       </ion-col>
     </ion-row>
+  </div>
+
+  <!-- Show Win screen -->
+  <div *ngIf="gameState == 'win'" align="center">
+    <p>You have WON this one!</p>
+    <p>Would you like to play again?</p>
+    <ion-button size="large" color="danger" (click)="restartGame()">
+      <ion-icon name="repeat">
+      </ion-icon>
+      Play again
+    </ion-button>
+  </div>
+
+  <!-- Show Lose screen -->
+  <div *ngIf="gameState == 'lose'" align="center">
+    <p>You have LOST this one!</p>
+    <p>Would you like to try again?</p>
+    <ion-button size="large" color="danger" (click)="restartGame()">
+      <ion-icon name="repeat">
+      </ion-icon>
+      Try again
+    </ion-button>
   </div>
 
 </ion-content>
